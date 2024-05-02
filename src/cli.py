@@ -12,7 +12,7 @@ def parse_args():
     # parser.add_argument("-n", "--night-mode", type=int, help="Twitter night mode theme (0-2)", default=0)
     # parser.add_argument('--lang', type=str,help="Browser language code (tr,en,es,..)", default="")
     # parser.add_argument('--chromedriver', type=str, help="Custom chromedriver path", default="")
-    # parser.add_argument('-o', '--output', type=str, help="Output file name", default="")
+    parser.add_argument('-o', '--output', type=str, help="Output file name", default="")
     # parser.add_argument('-sp', '--show-parent-tweets', dest='show_parent_tweets', action='store_true', help="Show parent tweets")
     # parser.add_argument('-spl', '--show-parent-limit', type=int, help="Show parent tweets limit (default: -1 = unlimited)", default=-1)
     # parser.add_argument('-sm', '--show-mentions', type=int, help="Show mentions count (default: 0)", default=0)
@@ -60,7 +60,7 @@ def main():
     #             tweet.set_cookies(cookies)
 
     try:
-        filename = run(tweet.screenshot(args.url))
+        filename = run(tweet.screenshot(url=args.url, path=args.output))
         print(f"Screenshot is saved: {filename}")
     except Exception as error:
         if args.debug:
