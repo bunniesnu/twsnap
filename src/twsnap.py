@@ -281,3 +281,6 @@ class Twsnap:
 
     def set_width(self, driver, element, width):
         driver.execute_script(f"arguments[0].style.width='{width}px'", element)
+
+    def set_chromedriver_path(self, chromedriver):
+        self.driver_path = chromedriver

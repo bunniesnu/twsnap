@@ -11,7 +11,7 @@ def parse_args():
     # parser.add_argument('-t', type=float, help="Waiting time while the page loading (1.0-10.0)", default=5.0)
     # parser.add_argument("-n", "--night-mode", type=int, help="Twitter night mode theme (0-2)", default=0)
     # parser.add_argument('--lang', type=str,help="Browser language code (tr,en,es,..)", default="")
-    # parser.add_argument('--chromedriver', type=str, help="Custom chromedriver path", default="")
+    parser.add_argument('--chromedriver', type=str, help="Custom chromedriver path", default="")
     parser.add_argument('-o', '--output', type=str, help="Output file name", default="")
     # parser.add_argument('-sp', '--show-parent-tweets', dest='show_parent_tweets', action='store_true', help="Show parent tweets")
     # parser.add_argument('-spl', '--show-parent-limit', type=int, help="Show parent tweets limit (default: -1 = unlimited)", default=-1)
@@ -45,8 +45,8 @@ def main():
         tweet.hide_all_media()
     else: 
         tweet.hide_media(args.hide_tweet_link_previews, args.hide_tweet_photos, args.hide_tweet_videos, args.hide_tweet_gifs, args.hide_tweet_quotes)
-    # if len(args.chromedriver) > 0:
-    #     tweet.set_chromedriver_path(args.chromedriver)
+    if len(args.chromedriver) > 0:
+        tweet.set_chromedriver_path(args.chromedriver)
 
     # if len(args.cookies) > 0:
     #     cookies = []
