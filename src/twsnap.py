@@ -107,7 +107,7 @@ class Twsnap:
 
             self.upscale_profile_pic(driver)
 
-            sl(2)
+            sl(0.3)
 
             x, y, width, height = driver.execute_script("var rect = arguments[0].getBoundingClientRect(); return [rect.x, rect.y, rect.width, rect.height];", main)
             driver.save_screenshot(path)
@@ -272,7 +272,9 @@ class Twsnap:
     def upscale_profile_pic(self, driver):
         profile_img = driver.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div/div/div/article/div/div/div[2]/div[1]/div/div/div/div/div[2]/div/div[2]/div/a/div[3]/div/div[2]/div')
         profile_img_img = profile_img.find_element(By.TAG_NAME, "img")
-        profile_img_img_link = "_".join(profile_img_img.get_attribute('src').split('_')[:2])+"_400x400.jpg"
+        profile_img_img_link_sub = profile_img_img.get_attribute('src')
+        profile_img_img_link = "_".join(profile_img_img_link_sub.split('_')[:2])+"_400x400."+profile_img_img_link_sub.split('.')[-1]
+        # print(profile_img_img_link)
         driver.execute_script("arguments[0].style.display='none';", profile_img.find_element(By.TAG_NAME, "div"))
         driver.execute_script(f"arguments[0].setAttribute('src', '{profile_img_img_link}'); arguments[0].setAttribute('class','');", profile_img_img)
 
