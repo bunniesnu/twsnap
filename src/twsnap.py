@@ -107,7 +107,7 @@ class Twsnap:
 
             self.upscale_profile_pic(driver)
 
-            sl(0.3)
+            sl(2)
 
             x, y, width, height = driver.execute_script("var rect = arguments[0].getBoundingClientRect(); return [rect.x, rect.y, rect.width, rect.height];", main)
             driver.save_screenshot(path)
