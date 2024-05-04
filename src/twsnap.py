@@ -86,12 +86,10 @@ class Twsnap:
             main = driver.find_element(By.XPATH, "(//ancestor::article)/..")
             main_articles = main.find_elements(By.XPATH, "(//ancestor::article)/div/div/div[3]/div")
             if self.mode == 0:
-                for i in range(len(main_articles)-1):
-                    if len(main_articles[i+1].get_attribute("innerHTML"))==0:
-                        driver.execute_script("""
-                        arguments[0].setAttribute('style','padding-bottom:15px;')
-                        """, main_articles[i])
-                        break
+                if len(main_articles[1].get_attribute("innerHTML"))*len(main_articles[2].get_attribute("innerHTML"))==0:
+                    driver.execute_script("""
+                    arguments[0].setAttribute('style','padding-bottom:15px;')
+                    """, main_articles[0])
 
             # Mode
             self.__code_main_footer_items_new(main,self.mode)
@@ -107,7 +105,7 @@ class Twsnap:
 
             self.upscale_profile_pic(driver)
 
-            sl(0.3)
+            sl(2)
 
             x, y, width, height = driver.execute_script("var rect = arguments[0].getBoundingClientRect(); return [rect.x, rect.y, rect.width, rect.height];", main)
             driver.save_screenshot(path)
