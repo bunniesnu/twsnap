@@ -33,6 +33,12 @@ class Twsnap:
     hide_gifs = False
     hide_quotes = False
 
+    link_del = False
+    photo_del = False
+    video_del = False
+    gif_del = False
+    quote_del = False
+
     def __init__(self, driver_path: str = None, gui: bool = False, mode: int = 3, hide_link_previews: bool = False, hide_photos: bool = False, hide_videos: bool = False, hide_gifs: bool = False, hide_quotes: bool = False, scale: float = 1.0, width: int = 700):
         self.gui = gui
         self.mode = mode
@@ -85,16 +91,16 @@ class Twsnap:
             self.__hide_global_items(driver)
             main = driver.find_element(By.XPATH, "(//ancestor::article)/..")
             main_articles = main.find_elements(By.XPATH, "(//ancestor::article)/div/div/div[3]/div")
-            if self.mode == 0:
-                if len(main_articles[1].get_attribute("innerHTML"))*len(main_articles[2].get_attribute("innerHTML"))==0:
-                    driver.execute_script("""
-                    arguments[0].setAttribute('style','padding-bottom:15px;')
-                    """, main_articles[0])
 
             # Mode
             self.__code_main_footer_items_new(main,self.mode)
             self.__hide_media(main, self.hide_link_previews, self.hide_photos, self.hide_videos, self.hide_gifs, self.hide_quotes)
             self.set_width(driver=driver, element=main, width=self.width)
+
+            if not ((self.hide_videos is False or self.video_del is False) and (self.hide_photos is False or self.photo_del is False) and (self.hide_gifs is False or self.gif_del is False) and (self.hide_quotes is False or self.quote_del is False) and (self.hide_link_previews is False or self.link_del is False)):
+                driver.execute_script("""
+                arguments[0].setAttribute('style','margin-top:0px')
+                """, main_articles[3])
 
             border_element = driver.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]')
             self.border_remove(driver, border_element)
@@ -162,12 +168,14 @@ class Twsnap:
                 element.parent.execute_script("""
                 arguments[0].style.display="none";
                 """, link_preview_element)
+                self.link_del = True
         if quote is True:
             quote_elements = element.find_elements(By.XPATH, QUOTE_XPATH)
             for quote_element in quote_elements:
                 element.parent.execute_script("""
                 arguments[0].style.display="none";
                 """, quote_element)
+                self.quote_del = True
         if len(media_elements) > 0:
             for el in media_elements:
                 if video is True:
@@ -176,12 +184,14 @@ class Twsnap:
                         element.parent.execute_script("""
                         arguments[0].style.display="none";
                         """, el)
+                        self.video_del = True
                         continue
                     sel = el.find_elements(By.XPATH, ".//source[contains(@src, 'blob:')]")
                     if len(sel) > 0:
                         element.parent.execute_script("""
                         arguments[0].style.display="none";
                         """, el)
+                        self.video_del = True
                         continue
                 if gif is True:
                     sel = el.find_elements(By.XPATH, ".//video[not(contains(@src, 'blob:'))]")
@@ -189,6 +199,7 @@ class Twsnap:
                         element.parent.execute_script("""
                         arguments[0].style.display="none";
                         """, el)
+                        self.gif_del = True
                         continue
                 if gif is True:
                     sel = el.find_elements(By.XPATH, ".//video[not(contains(@src, 'blob:'))]")
@@ -196,6 +207,7 @@ class Twsnap:
                         element.parent.execute_script("""
                         arguments[0].style.display="none";
                         """, el)
+                        self.gif_del = True
                         continue
                 if photo is True:
                     sel = el.find_elements(By.XPATH, ".//div[contains(@data-testid, 'videoPlayer')]")
@@ -203,6 +215,7 @@ class Twsnap:
                         element.parent.execute_script("""
                         arguments[0].style.display="none";
                         """, el)
+                        self.photo_del = True
                         continue
 
     def __code_main_footer_items_new(self, element, mode):
