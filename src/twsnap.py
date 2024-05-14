@@ -6,7 +6,7 @@ from PIL import Image
 from .webdriver import get_driver
 from os.path import exists
 from os import remove
-from .utils import is_valid_tweet_url, get_tweet_file_name
+from .utils import is_valid_tweet_url, get_tweet_file_name, change_to_ios_emoji
 
 class Twsnap:
     driver = None
@@ -39,7 +39,9 @@ class Twsnap:
     gif_del = False
     quote_del = False
 
-    def __init__(self, driver_path: str = None, gui: bool = False, mode: int = 3, hide_link_previews: bool = False, hide_photos: bool = False, hide_videos: bool = False, hide_gifs: bool = False, hide_quotes: bool = False, scale: float = 1.0, width: int = 700):
+    apple_emoji = False
+
+    def __init__(self, driver_path: str = None, gui: bool = False, mode: int = 3, hide_link_previews: bool = False, hide_photos: bool = False, hide_videos: bool = False, hide_gifs: bool = False, hide_quotes: bool = False, scale: float = 1.0, width: int = 700, apple_emoji: bool = False):
         self.gui = gui
         self.mode = mode
         self.hide_link_previews = hide_link_previews
@@ -50,6 +52,7 @@ class Twsnap:
         self.scale = scale
         self.driver_path = driver_path
         self.width = width
+        self.apple_emoji = apple_emoji
     
     async def screenshot(self, url: str, night_mode = None, overwrite = True, path = './output.png', scale=None):
         if is_valid_tweet_url(url) is False:
@@ -108,6 +111,11 @@ class Twsnap:
 
             driver.execute_script("window.scrollTo(0, 0);")
 
+            if self.apple_emoji:
+                emojis = main.find_elements(By.XPATH,'//img[contains(@src,"svg")]')
+                print(f"{len(emojis)} emojis found")
+                for emoji in emojis:
+                    change_to_ios_emoji(driver, emoji)
 
             self.upscale_profile_pic(driver)
 

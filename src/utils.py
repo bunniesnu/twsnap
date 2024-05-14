@@ -2,6 +2,7 @@ from re import match
 import os
 import base64
 from PIL import Image, ImageDraw
+from selenium.webdriver.common.by import By
 
 def is_valid_tweet_url(url):
     result = match(
@@ -52,3 +53,12 @@ def add_corners(im, rad):
     alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (w - rad, h - rad))
     im.putalpha(alpha)
     return im
+
+def change_to_ios_emoji(driver, element):
+    alt = element.get_attribute("alt")
+    class_ = element.get_attribute("class")
+    # src = element.get_attribute("src")
+    driver.execute_script(f"""
+    arguments[0].insertAdjacentHTML('afterend','<div class="{class_}" style="vertical-align:0;font-size:16px;width:20.4px;height:20.4px;font-family:Apple Color Emoji;">{alt}</div>');
+    arguments[0].parentNode.removeChild(arguments[0]);
+    """, element)

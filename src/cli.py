@@ -30,6 +30,7 @@ def parse_args():
     parser.add_argument('-d', '--debug', dest='debug', action='store_true', help="Debug mode")
     parser.add_argument('--gui', dest='gui', action='store_true', help="GUI mode, open browser window")
     # parser.add_argument('--cookies', type=str, help="Set cookies cookie1=value1;cookie2=value2", default="")
+    parser.add_argument('--apple-emoji', dest='apple_emoji', action='store_true', help="Change to Apple emojis")
     parser.set_defaults(gui=False, hide_tweet_photos=False, hide_tweet_videos=False, hide_tweet_gifs=False, hide_tweet_quotes=False, hide_tweet_link_previews=False, hide_all_tweet_medias=False)
 
     args = parser.parse_args()
@@ -38,7 +39,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    tweet = Twsnap(mode=args.mode, scale=args.scale, gui=args.gui, width=args.width)
+    tweet = Twsnap(mode=args.mode, scale=args.scale, gui=args.gui, width=args.width, apple_emoji=args.apple_emoji)
     # tweet.set_lang(args.lang)
     # tweet.set_wait_time(args.t)
     if args.hide_all_tweet_medias is True: 
