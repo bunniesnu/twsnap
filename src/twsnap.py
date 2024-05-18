@@ -80,7 +80,7 @@ class Twsnap:
             driver.get(url)
 
             # Apply cookies
-            driver.add_cookie({"name": "night_mode", "value": str(self.night_mode if night_mode is None else night_mode)})
+            driver.add_cookie({"name": "night_mode", "value": str(self.night_mode if night_mode is None else night_mode), "domain": ".x.com"})
             driver.get(url)
 
             driver.execute_script(f'document.body.style.zoom=\'{100*self.scale}%\'')
@@ -298,7 +298,7 @@ class Twsnap:
         driver.execute_script(f"arguments[0].setAttribute('src', '{profile_img_img_link}'); arguments[0].setAttribute('class','');", profile_img_img)
 
     def border_remove(self, driver, element):
-        driver.execute_script(f"arguments[0].setAttribute('class','{element.get_attribute('class').replace(' r-13l2t4g','')}')",element)
+        driver.execute_script(f"arguments[0].setAttribute('style', 'border-right:0px')",element)
 
     def set_width(self, driver, element, width):
         driver.execute_script(f"arguments[0].style.width='{width}px'", element)
