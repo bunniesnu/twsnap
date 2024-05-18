@@ -107,6 +107,8 @@ class Twsnap:
 
             border_element = driver.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]')
             self.border_remove(driver, border_element)
+            dot3 = driver.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/section/div/div/div[1]/div/div/article/div/div/div[2]/div[2]/div/div/div[2]')
+            driver.execute_script("arguments[0].style.display='none';", dot3)
 
 
             driver.execute_script("window.scrollTo(0, 0);")
